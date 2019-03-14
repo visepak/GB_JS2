@@ -12,7 +12,7 @@ class List {
         this.url = url;
         this.goods = [];
         this.allProducts = [];
-        _this.init();
+        this._init();
     }
 
     getJson(url) {
@@ -62,7 +62,7 @@ class Item {
                 <div class="desc">
                     <h3>${this.product_name}</h3>
                     <p>${this.price}</p>
-                    <button class="buly-btn"
+                    <button class="buy-btn"
                     data-id="${this.id_product}"
                     data-name="${this.product_name}"
                     data-price="${this.price}">Купить</button>
@@ -81,14 +81,12 @@ class ProductList extends List {
 
     _init() {
         document.querySelector(this.container).addEventListener('click', e => {
-            if (e.target.classList.contains('buy-btn')) {
+            if(e.target.classList.contains('buy-btn')) {
                 this.cart.addProduct(e.target);
 
             }
-
         })
     }
-
 }
 
 class ProductItem extends Item {
@@ -134,11 +132,11 @@ class Cart extends List {
                     let productId = +element.dataset['id'];
                     let find = this.allProducts.find(product => product.id_product === productId);
                     if (find.quantity > 1) {
-                        this.quantity--;
+                        find.quantity--;
                         this._updateCart(find);
                     } else {
                         this.allProducts.splice(this.allProducts.indexOf(find), 1);
-                        document.querySelector('.cart-item[data-id="${productId}"]').remove();
+                        document.querySelector(`.cart-item[data-id="${productId}"]`).remove();
                     }
                 } else {
                     alert('Error');
@@ -171,7 +169,7 @@ class CartItem extends Item {
     }
 
     render() {
-        `<div class="cart-item" data-id="${this.id_product}">
+        return `<div class="cart-item" data-id="${this.id_product}">
             <div class="product-bio">
                 <img src="${this.img}" alt="Some image">
                 <div class="product-desc">
